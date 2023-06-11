@@ -1,7 +1,6 @@
 package salvomercurio.gestioneasset.common.util;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import salvomercurio.gestioneasset.model.Asset;
 import salvomercurio.gestioneasset.model.AssetType;
 import salvomercurio.gestioneasset.model.Role;
-import salvomercurio.gestioneasset.model.RoleType;
 import salvomercurio.gestioneasset.model.User;
 import salvomercurio.gestioneasset.repository.AssetRepository;
-import salvomercurio.gestioneasset.repository.RoleRepository;
 import salvomercurio.gestioneasset.repository.UserRepository;
 
 @Component
@@ -28,16 +25,12 @@ public class GestioneassetRunner implements CommandLineRunner {
 	@Autowired
 	AssetRepository assetRepository;
 
-	@Autowired
-	RoleRepository roleRepository;
-
 	@Override
 	public void run(String... args) throws Exception {
 
 		if (assetRepository.count() == 0) {
 
-			List<Role> role = initRole();
-			User user = initUser(role);
+			User user = initUser();
 			List<Asset> assetList = initAsset(user);
 
 		}
@@ -69,31 +62,13 @@ public class GestioneassetRunner implements CommandLineRunner {
 
 	}
 
-	private List<Role> initRole() {
-		List<Role> result = new ArrayList<Role>();
-		Role role = new Role();
-		role.setRoleType(RoleType.ROLE_ADMIN);
-		roleRepository.save(role);
-		result.add(role);
-		log.info("Saved Role: {}", role.getRoleType());
-
-		role = new Role();
-		role.setRoleType(RoleType.ROLE_USER);
-		roleRepository.save(role);
-		result.add(role);
-
-		log.info("Saved Role: {}", role.getRoleType());
-
-		return result;
-	}
-
-	private User initUser(List<Role> roles) {
+	private User initUser() {
 		User user = new User();
 		user.setEmail("maurilio@gmail.com");
 		user.setName("Maurilio Bianchi");
 		user.setUsername("m.bianchi");
 		user.setPassword("prova");
-		user.setRoles(new HashSet<Role>(roles));
+		user.setRole(Role.ROLE_ADMIN);
 		userRepository.save(user);
 
 		log.info("Saved User: {}", user.getName());

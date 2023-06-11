@@ -21,13 +21,13 @@ import salvomercurio.gestioneasset.model.Asset;
 import salvomercurio.gestioneasset.service.AssetService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/asset")
 public class AssetController {
 
 	@Autowired
 	AssetService assetService;
 
-	@GetMapping(path = "/assets")
+	@GetMapping(path = "")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Page<Asset>> findAll(Pageable pageable) {
 		Page<Asset> findAll = assetService.findAll(pageable);
@@ -40,7 +40,7 @@ public class AssetController {
 
 	}
 
-	@GetMapping(path = "/assets/{id}")
+	@GetMapping(path = "/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Asset> findById(@PathVariable(required = true) Long id) {
 		Optional<Asset> found = assetService.findById(id);
@@ -51,7 +51,7 @@ public class AssetController {
 		}
 	}
 
-	@GetMapping(path = "/user/{type}")
+	@GetMapping(path = "/{type}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Page<Asset>> findByType(@PathVariable(required = true) String type, Pageable pageable) {
 		Page<Asset> findAllType = assetService.findByType(type, pageable);
@@ -62,21 +62,21 @@ public class AssetController {
 		}
 	}
 
-	@PostMapping(path = "/assets")
+	@PostMapping(path = "")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Asset> save(@RequestBody Asset asset) {
 		Asset save = assetService.save(asset);
 		return new ResponseEntity<>(save, HttpStatus.OK);
 	}
 
-	@PutMapping(path = "/assets/{id}")
+	@PutMapping(path = "/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Asset> update(@PathVariable Long id, @RequestBody Asset asset) {
 		Asset save = assetService.update(id, asset);
 		return new ResponseEntity<>(save, HttpStatus.OK);
 	}
 
-	@DeleteMapping(path = "/assets/{id}")
+	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		assetService.delete(id);
 		return new ResponseEntity<>("Asset deleted", HttpStatus.OK);

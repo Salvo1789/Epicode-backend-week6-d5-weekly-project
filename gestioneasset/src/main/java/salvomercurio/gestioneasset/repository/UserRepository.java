@@ -22,4 +22,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
 	void deleteById(Long id);
 
+	Optional<User> findByEmail(String email);
+
 }

@@ -21,13 +21,13 @@ import salvomercurio.gestioneasset.model.User;
 import salvomercurio.gestioneasset.service.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 
-	@GetMapping(path = "/users")
+	@GetMapping(path = "")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Page<User>> findAll(Pageable pageable) {
 		Page<User> findAll = userService.findAll(pageable);
@@ -40,7 +40,7 @@ public class UserController {
 
 	}
 
-	@GetMapping(path = "/user/{id}")
+	@GetMapping(path = "/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> findById(@PathVariable(required = true) Long id) {
 		Optional<User> found = userService.findById(id);
@@ -51,21 +51,21 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(path = "/users")
+	@PostMapping(path = "")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> save(@RequestBody User user) {
 		User save = userService.save(user);
 		return new ResponseEntity<>(save, HttpStatus.OK);
 	}
 
-	@PutMapping(path = "/users/{id}")
+	@PutMapping(path = "/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
 		User save = userService.update(id, user);
 		return new ResponseEntity<>(save, HttpStatus.OK);
 	}
 
-	@DeleteMapping(path = "/users/{id}")
+	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		userService.delete(id);
 		return new ResponseEntity<>("Element deleted", HttpStatus.OK);
